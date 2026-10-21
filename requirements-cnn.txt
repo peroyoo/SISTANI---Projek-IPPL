@@ -1,0 +1,4 @@
+# Hanya untuk fitur diagnosis foto (CNN). Pasang SETELAH requirements.txt.
+# Di Windows/Linux tanpa GPU, versi CPU lebih ringan. Perintah resminya ada di TUTORIAL.md.
+torch>=2.2
+torchvision>=0.17
