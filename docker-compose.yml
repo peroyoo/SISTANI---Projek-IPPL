@@ -1,0 +1,35 @@
+﻿services:
+  db:
+    image: postgres:16
+    container_name: sistani-db
+    environment:
+      POSTGRES_DB: sistani
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - sistani-postgres-data:/var/lib/postgresql/data
+
+  api:
+    build: ./sistani-backend
+    container_name: sistani-api
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/sistani
+    volumes:
+      - ./sistani-backend/uploads:/app/uploads
+
+  frontend:
+    build: ./sistani-frontend
+    container_name: sistani-frontend
+    depends_on:
+      - api
+    ports:
+      - "3000:80"
+
+volumes:
+  sistani-postgres-data:
