@@ -1,8 +1,21 @@
+
+# Frontend
+node_modules/
+dist/
+
+# Environment dan rahasia
 .env
+.env.*
+!.env.example
+
+# Python / backend
 venv/
+.venv/
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
+
+# Upload dan model AI
 uploads/*
 !uploads/.gitkeep
 models_ai/*
