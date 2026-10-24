@@ -24,7 +24,7 @@
       - ./sistani-backend/uploads:/app/uploads
 
   frontend:
-    build: ./sistani-frontend
+    build: ./sistani-frontendd/sistani-frontend
     container_name: sistani-frontend
     depends_on:
       - api

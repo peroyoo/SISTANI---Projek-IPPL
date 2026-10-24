@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     admin_email: str = "admin@sistani.id"
     admin_password: str = "ganti_password_admin_ini"
 
-    harga_premium: int = 49000
+    harga_premium: int = 9000
     durasi_premium_hari: int = 30
 
     cors_origins: str = "*"
