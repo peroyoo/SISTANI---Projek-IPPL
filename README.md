@@ -1,13 +1,13 @@
 # SISTANI — Menjalankan dengan Docker
 
-SISTANI terdiri dari:
+SISTANI merupakan sistem yang terdiri dari:
 
 - **Frontend:** React + Vite
 - **Backend:** FastAPI
 - **Database:** PostgreSQL
 - **Container:** Docker
 
-Dengan Docker, frontend, backend, dan database dapat dijalankan sekaligus tanpa perlu menjalankan Python, PostgreSQL, atau Node.js secara manual.
+Dengan Docker, frontend, backend, dan database dapat dijalankan secara bersamaan tanpa perlu menjalankan Python, PostgreSQL, atau Node.js secara manual.
 
 ---
 
@@ -24,10 +24,13 @@ Pastikan **Docker Desktop sudah dalam keadaan Running**.
 
 ## 2. Struktur Project
 
-Pastikan struktur folder seperti berikut:
+Struktur project SISTANI:
 
 ```text
 FINAL/
+├── README.md
+├── docker-compose.yml
+│
 ├── sistani-backend/
 │   ├── app/
 │   ├── ml/
@@ -35,7 +38,6 @@ FINAL/
 │   ├── tests/
 │   ├── uploads/
 │   ├── Dockerfile
-│   ├── docker-compose.yml
 │   ├── requirements.txt
 │   └── ...
 │
@@ -47,36 +49,33 @@ FINAL/
     └── ...
 ```
 
-File `docker-compose.yml` berada di dalam folder:
-
-```text
-sistani-backend/
-```
+File `docker-compose.yml` berada di **folder utama `FINAL/`**.
 
 ---
 
-## 3. Masuk ke Folder Backend
+## 3. Masuk ke Folder Project
 
-Buka **PowerShell**, kemudian jalankan:
+Buka **PowerShell**, kemudian masuk ke folder utama project:
 
 ```powershell
-cd "C:\Users\ASUS\Documents\IPPL BACKEND FRONTEND\FINAL\sistani-backend"
+cd "C:\Users\ASUS\Documents\IPPL BACKEND FRONTEND\FINAL"
 ```
 
 > Jika lokasi project berbeda, sesuaikan alamat folder dengan lokasi project di komputer masing-masing.
 
-Pastikan sudah berada di folder yang benar:
+Pastikan berada di folder yang benar:
 
 ```powershell
 Get-ChildItem
 ```
 
-Pastikan terdapat file:
+Pastikan terdapat:
 
 ```text
-Dockerfile
+README.md
 docker-compose.yml
-requirements.txt
+sistani-backend
+sistani-frontend
 ```
 
 ---
@@ -91,8 +90,8 @@ docker compose up -d --build
 
 Perintah tersebut akan:
 
-1. Membuild image backend.
-2. Membuild image frontend.
+1. Membuat image backend.
+2. Membuat image frontend.
 3. Menjalankan PostgreSQL.
 4. Menjalankan FastAPI.
 5. Menjalankan frontend React.
@@ -119,13 +118,13 @@ Up
 Contohnya:
 
 ```text
-NAME               STATUS
-sistani-api        Up
-sistani-db         Up
-sistani-frontend   Up
+NAME                 STATUS
+sistani-api          Up
+sistani-db           Up
+sistani-frontend     Up
 ```
 
-Jika ketiganya `Up`, SISTANI sudah berhasil dijalankan.
+Jika ketiga container tersebut memiliki status `Up`, SISTANI sudah berhasil dijalankan.
 
 ---
 
@@ -139,15 +138,15 @@ Buka browser:
 http://localhost:3000
 ```
 
+Frontend digunakan untuk menjalankan aplikasi SISTANI.
+
 ### Backend Swagger
 
-Untuk melihat dan menguji API:
+Untuk melihat dan menguji endpoint API:
 
 ```text
 http://localhost:8000/docs
 ```
-
-Frontend digunakan untuk menjalankan aplikasi SISTANI.
 
 Swagger digunakan untuk pengujian endpoint backend.
 
@@ -155,7 +154,7 @@ Swagger digunakan untuk pengujian endpoint backend.
 
 ## 7. Menjalankan SISTANI Setelah Komputer Dimatikan
 
-Jika sebelumnya SISTANI sudah pernah di-build dan tidak ada perubahan kode, cukup jalankan:
+Jika SISTANI sudah pernah di-build dan tidak ada perubahan kode, cukup jalankan:
 
 ```powershell
 docker compose up -d
@@ -167,9 +166,9 @@ Tidak perlu menggunakan `--build` setiap kali.
 
 ## 8. Jika Ada Perubahan Kode
 
-Jika melakukan perubahan pada frontend atau backend, Docker tidak otomatis menggunakan kode terbaru pada setup ini.
+Pada setup Docker saat ini, kode frontend dan backend dimasukkan ke dalam image ketika proses build.
 
-Setelah selesai mengubah kode, jalankan:
+Jika melakukan perubahan pada frontend atau backend, jalankan:
 
 ```powershell
 docker compose up -d --build
@@ -181,9 +180,7 @@ Kemudian refresh browser:
 http://localhost:3000
 ```
 
-### Contoh
-
-Jika mengubah:
+Contoh perubahan:
 
 ```text
 sistani-frontend/src/
@@ -195,7 +192,7 @@ atau:
 sistani-backend/app/
 ```
 
-jalankan:
+Setelah melakukan perubahan, jalankan kembali:
 
 ```powershell
 docker compose up -d --build
@@ -247,23 +244,25 @@ Untuk menghentikan semua container:
 docker compose down
 ```
 
-Perintah ini menghentikan dan menghapus container, tetapi volume database tetap dipertahankan.
+Perintah ini menghentikan dan menghapus container, tetapi **volume database tetap dipertahankan**.
+
+Data PostgreSQL tidak ikut dihapus.
 
 ---
 
-## 12. Jangan Gunakan `-v` Sembarangan
+## 12. Jangan Menggunakan `-v` Sembarangan
 
-Hindari:
+Hindari menjalankan:
 
 ```powershell
 docker compose down -v
 ```
 
-karena `-v` akan menghapus volume database Docker.
+karena opsi `-v` akan menghapus volume database Docker.
 
 Akibatnya, data database SISTANI dapat ikut terhapus.
 
-Gunakan `-v` hanya jika memang ingin menghapus database dan memulai dari awal.
+Gunakan `-v` hanya jika memang ingin menghapus database dan memulai project dari kondisi awal.
 
 ---
 
@@ -271,13 +270,13 @@ Gunakan `-v` hanya jika memang ingin menghapus database dan memulai dari awal.
 
 | Kebutuhan | Perintah |
 |---|---|
-| Pertama kali / setelah ubah kode | `docker compose up -d --build` |
+| Pertama kali / setelah mengubah kode | `docker compose up -d --build` |
 | Menjalankan tanpa build | `docker compose up -d` |
 | Mengecek container | `docker compose ps` |
 | Melihat log backend | `docker compose logs -f api` |
 | Melihat semua log | `docker compose logs -f` |
 | Menghentikan SISTANI | `docker compose down` |
-| Menghapus container + database | `docker compose down -v` ⚠️ |
+| Menghapus container + volume database | `docker compose down -v` ⚠️ |
 
 ---
 
@@ -290,7 +289,7 @@ Pastikan Docker Running
         ↓
 Buka PowerShell
         ↓
-Masuk ke folder sistani-backend
+Masuk ke folder FINAL
         ↓
 docker compose up -d --build
         ↓
@@ -307,28 +306,50 @@ SISTANI siap digunakan
 
 ## 15. Untuk Teman yang Menjalankan Project
 
-Jika project dibagikan kepada komputer lain:
+Jika project dibagikan atau di-clone ke komputer lain:
 
 1. Install Docker Desktop.
 2. Clone atau salin project SISTANI.
-3. Masuk ke folder `sistani-backend`.
-4. Pastikan terdapat `docker-compose.yml`.
-5. Jalankan:
+3. Buka PowerShell.
+4. Masuk ke folder utama project:
+
+```powershell
+cd "lokasi\FINAL"
+```
+
+5. Pastikan terdapat:
+
+```text
+README.md
+docker-compose.yml
+sistani-backend/
+sistani-frontend/
+```
+
+6. Jalankan:
 
 ```powershell
 docker compose up -d --build
 ```
 
-6. Cek:
+7. Cek container:
 
 ```powershell
 docker compose ps
 ```
 
-7. Buka:
+8. Pastikan container memiliki status `Up`.
+
+9. Buka aplikasi:
 
 ```text
 http://localhost:3000
+```
+
+10. Untuk mengakses Swagger:
+
+```text
+http://localhost:8000/docs
 ```
 
 Tidak perlu menjalankan:
